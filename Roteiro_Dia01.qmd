@@ -1,0 +1,219 @@
+---
+title: "Material: Dia 01"
+format: html
+editor: visual
+---
+
+## Parte 0: Instalação das Ferramentas Essenciais (R e RStudio)
+
+Antes de qualquer coisa, precisamos das nossas duas ferramentas principais. É fundamental entender a diferença entre elas:
+
+-   **R:** É a linguagem de programação, o "motor" que executa todos os cálculos e gera os gráficos. Ele não tem uma interface gráfica amigável.
+
+-   **RStudio:** É um "Ambiente de Desenvolvimento Integrado" (IDE). Pense nele como o "painel do carro": uma interface completa e organizada com editor de código, console, visualizador de gráficos e muito mais, que nos permite interagir com o "motor" (R) de forma muito mais fácil e produtiva.
+
+**A regra de ouro: Instale o R PRIMEIRO, e depois o RStudio.**
+
+#### **Passo 1: Instalar o R (O Motor)**
+
+1.  Acesse o site oficial de download do R: [**https://cran.r-project.org/**](https://cran.r-project.org/)
+
+2.  Clique no link de download correspondente ao seu sistema operacional:
+
+    -   **Para Windows:**
+
+        -   Clique em **"Download R for Windows"**.
+
+        -   Clique em **"base"**.
+
+        -   Clique no link grande no topo da página que diz **"Download R-X.X.X for Windows"** (ex: R-4.4.1 for Windows).
+
+        -   Execute o arquivo `.exe` baixado e aceite todas as configurações padrão clicando em "Avançar" ("Next") até o final da instalação.
+
+    -   **Para macOS (Mac):**
+
+        -   Clique em **"Download R for macOS"**.
+
+        -   Escolha o pacote `.pkg` mais recente que seja compatível com seu processador. Geralmente há uma versão para "Apple silicon" (chips M1/M2/M3) e outra para "Intel". Se não tiver certeza, seu Mac lhe informará qual é a correta.
+
+        -   Execute o arquivo `.pkg` baixado e siga as instruções, aceitando as configurações padrão.
+
+    -   **Para Linux:**
+
+        -   Clique em **"Download R for Linux"**.
+
+        -   Encontre sua distribuição (Debian, Ubuntu, Fedora, etc.) e siga as instruções específicas. Geralmente, a instalação é feita através do terminal (ex: `sudo apt-get install r-base` para sistemas baseados em Debian/Ubuntu).
+
+#### **Passo 2: Instalar o RStudio (O Painel do Carro)**
+
+1.  Com o R já instalado, acesse o site oficial do RStudio (agora chamado Posit): [**https://posit.co/download/rstudio-desktop/**](https://posit.co/download/rstudio-desktop/)
+
+2.  A página geralmente detecta seu sistema operacional automaticamente.
+
+3.  Clique no botão de download para baixar a versão gratuita **"RStudio Desktop"**.
+
+4.  Execute o instalador baixado e, novamente, aceite todas as configurações padrão.
+
+Ao final, você **não precisará abrir o R**. Você sempre irá abrir o **RStudio**, que automaticamente encontrará e se conectará ao R que você instalou no Passo 1.
+
+## Parte 1: A Fundação - Entendendo Seus Dados
+
+Antes de desenhar qualquer gráfico, precisamos entender a matéria-prima: nossos dados. Em estatística, as variáveis (as colunas da nossa tabela) são classificadas em diferentes tipos, e essa classificação define o que podemos ou não fazer com elas.
+
+#### **1.1. Tipos de Variáveis**
+
+-   **Variáveis Qualitativas (ou Categóricas):** Descrevem uma qualidade ou característica. Elas são divididas em:
+
+    -   **Nominais:** Categorias sem uma ordem intrínseca.
+
+        -   *Exemplos:* `species` (Adelie, Chinstrap, Gentoo), `island` (Torgersen, Biscoe, Dream), sexo (macho, fêmea), cor do olho.
+
+    -   **Ordinais:** Categorias que possuem uma ordem ou hierarquia clara.
+
+        -   *Exemplos:* Nível de escolaridade (Graduação, Mestrado, Doutorado), estágio de uma doença (Inicial, Intermediário, Avançado), classe social (Baixa, Média, Alta).
+
+-   **Variáveis Quantitativas (ou Numéricas):** Descrevem uma quantidade ou medida. Elas são divididas em:
+
+    -   **Discretas:** Valores que podem ser contados, geralmente números inteiros. Não existem valores "intermediários".
+
+        -   *Exemplos:* Número de ovos em um ninho (pode ser 1 ou 2, mas não 1.5), número de publicações de um pesquisador.
+
+    -   **Contínuas:** Valores que podem assumir qualquer número dentro de um intervalo.
+
+        -   *Exemplos:* `bill_len` (comprimento do bico), `body_mass`(massa corporal), altura, temperatura, pressão arterial.
+
+**Por que isso é crucial?** O tipo de variável em cada eixo (X e Y) determinará qual tipo de gráfico (`geom`) é o mais apropriado. Tentar fazer um gráfico de dispersão com uma variável categórica no eixo Y não faz sentido, por exemplo.
+
+## Parte 2: A Gramática Visual - O Gráfico Certo para a Pergunta Certa
+
+Um gráfico eficaz é a resposta visual a uma pergunta clara. A "pergunta" é definida pela combinação dos tipos de variáveis que você deseja analisar.
+
+#### **2.1. Visualizando UMA Variável**
+
+-   **Pergunta: Como os valores de UMA variável NUMÉRICA se distribuem?**
+
+    -   **Gráfico: Histograma (`geom_histogram`)**
+
+        -   **O que ele faz:** Agrupa os dados em "caixas" (bins) de valores e conta quantos pontos de dados caem em cada caixa.
+
+        -   **Quando usar:** Para entender a forma da sua distribuição (é simétrica? tem mais de um pico? tem valores extremos?). Essencial para verificar pressupostos de testes estatísticos.
+
+        -   **Exemplo:** "Qual é a distribuição da massa corporal de todos os pinguins?"
+
+-   **Pergunta: Como os valores de UMA variável CATEGÓRICA se distribuem?**
+
+    -   **Gráfico: Gráfico de Barras (`geom_bar`)**
+
+        -   **O que ele faz:** Conta o número de ocorrências em cada categoria e exibe como uma barra. A altura da barra é proporcional à contagem.
+
+        -   **Quando usar:** Para ver qual categoria é a mais (ou menos) frequente.
+
+        -   **Exemplo:** "Quantos pinguins de cada espécie foram amostrados?"
+
+#### **2.2. Visualizando DUAS Variáveis**
+
+-   **Pergunta: Como uma variável NUMÉRICA se relaciona com outra variável NUMÉRICA?**
+
+    -   **Gráfico: Gráfico de Dispersão ou Scatter Plot (`geom_point`)**
+
+        -   **O que ele faz:** Plota cada observação como um ponto em um plano Cartesiano (X, Y).
+
+        -   **Quando usar:** É a melhor ferramenta para investigar correlações. A relação é positiva (ambas sobem juntas), negativa (uma sobe, a outra desce) ou não há relação? É linear ou curva?
+
+        -   **Exemplo:** "Pinguins com bicos mais longos também têm nadadeiras mais longas?"
+
+-   **Pergunta: Como uma variável NUMÉRICA se compara entre diferentes grupos (variável CATEGÓRICA)?**
+
+    -   **Gráfico: Boxplot (`geom_boxplot`)**
+
+        -   **O que ele faz:** Resume a distribuição da variável numérica para cada categoria. Mostra a mediana (a linha no meio da caixa), os quartis (os limites da caixa), e os possíveis outliers (pontos individuais).
+
+        -   **Quando usar:** Excelente para comparar não apenas as médias, mas a dispersão e a simetria dos dados entre os grupos. É muito mais informativo que um gráfico de barras com média e erro padrão.
+
+        -   **Exemplo:** "A massa corporal difere entre as três espécies de pinguins?"
+
+    -   **Gráfico de Violino (`geom_violin`)**
+
+        -   **O que ele faz:** Combina a ideia de um boxplot com um histograma espelhado (chamado de "estimativa de densidade"). A largura do violino mostra onde os dados são mais concentrados.
+
+        -   **Quando usar:** Quando você quer uma visão ainda mais detalhada da distribuição entre os grupos, especialmente se a distribuição for bimodal (tiver dois picos).
+
+        -   **Exemplo:** Mesma pergunta do boxplot, mas com mais detalhes sobre a forma da distribuição.
+
+-   **Pergunta: Como uma variável CATEGÓRICA se relaciona com outra variável CATEGÓRICA?**
+
+    -   **Gráfico: Gráfico de Barras Agrupadas ou Empilhadas (`geom_bar` com `position` ou `geom_col` com `facet`)**
+
+        -   **O que ele faz:** Conta as combinações entre as categorias.
+
+        -   **Quando usar:** Para entender proporções e relações entre grupos.
+
+        -   **Exemplo:** "A proporção de machos e fêmeas é a mesma em todas as ilhas?"
+
+## **Parte 3: A Estética do Gráfico - Cores, Formas e Clareza**
+
+Uma boa estética não é sobre deixar o gráfico "bonito", mas sim sobre torná-lo **claro, honesto e fácil de interpretar**.
+
+#### **3.1. O Uso Intencional da Cor: Paletas de Cores**
+
+A cor é uma das ferramentas mais poderosas, e também uma das mais mal utilizadas. A escolha da paleta de cores depende do **tipo de dado** que a cor está representando.
+
+-   **Paletas Qualitativas (ou Categóricas):**
+
+    -   **Quando usar:** Para variáveis **nominais**, onde cada categoria é distinta e não há ordem.
+
+    -   **Objetivo:** Máxima diferenciação entre as cores.
+
+    -   **Boas práticas:** Evite cores muito vibrantes ou "neon". Use paletas testadas para acessibilidade (daltonismo). O `ggplot2` tem uma boa paleta padrão, mas pacotes como `RColorBrewer` (paleta "Set2" ou "Paired") e `viridis` (opção `discrete = TRUE`) são excelentes.
+
+    -   **Exemplo:** Mapear a variável `species` para a cor.
+
+-   **Paletas Sequenciais:**
+
+    -   **Quando usar:** Para variáveis **numéricas ou ordinais**, onde os dados vão de "baixo" para "alto".
+
+    -   **Objetivo:** Mostrar uma progressão clara.
+
+    -   **Boas práticas:** Use um gradiente de uma única cor (ex: de azul claro a azul escuro) ou de duas cores análogas. Isso cria uma ordem visual intuitiva.
+
+    -   **Exemplo:** Em um mapa, colorir os municípios de acordo com a população (quanto mais escuro, mais populoso).
+
+-   **Paletas Divergentes:**
+
+    -   **Quando usar:** Para variáveis numéricas que têm um ponto central significativo (geralmente o zero) e valores que divergem para os dois lados (positivos e negativos).
+
+    -   **Objetivo:** Enfatizar os extremos e o ponto central.
+
+    -   **Boas práticas:** Use duas cores contrastantes que se encontram em uma cor neutra no centro (ex: azul-branco-vermelho).
+
+    -   **Exemplo:** Mostrar o resultado de uma eleição (percentual de votos para o candidato A vs. B), o lucro/prejuízo de uma empresa, ou a expressão gênica (up-regulated vs. down-regulated).
+
+**Ferramenta Chave:** O pacote `viridis` é o seu melhor amigo. Suas paletas (`viridis`, `magma`, `plasma`, `cividis`) são bonitas, perceptualmente uniformes (uma mudança no valor do dado corresponde a uma mudança igual na percepção da cor) e amigáveis para daltônicos.
+
+#### **3.2. Princípios de Design para Gráficos Científicos**
+
+-   **Maximize a Razão "Dados-Tinta" (Data-Ink Ratio):** Conceito de Edward Tufte. A maior parte da "tinta" do seu gráfico deve ser usada para mostrar os dados.
+
+    -   **O que remover:** Fundos cinzas, bordas desnecessárias, grades muito pesadas, efeitos 3D.
+
+    -   **Use os temas do `ggplot2`:** `theme_classic()` e `theme_minimal()` são ótimos pontos de partida.
+
+-   **Evite "Chartjunk":** Qualquer elemento visual que não adiciona informação e apenas distrai o leitor.
+
+-   **Hierarquia e Legibilidade:**
+
+    -   O título deve ser o maior e mais proeminente.
+
+    -   Os rótulos dos eixos devem ser claros e incluir as unidades (ex: "Massa Corporal (g)").
+
+    -   As fontes devem ser legíveis (tamanho mínimo 10-12pt para publicação).
+
+-   **Anotações Diretas:** Sempre que possível, coloque os rótulos diretamente nos dados em vez de depender de uma legenda separada. Isso reduz a carga cognitiva do leitor. (Veremos como fazer isso no Dia 2 com o Inkscape).
+
+## Parte 4: Mão na Massa
+
+Prática
+
+## Parte 5: Exportação
+
+Prática
